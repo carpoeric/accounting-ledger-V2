@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +102,6 @@ public class MySqlTransactionDAO extends MySqlDaoBase implements TransactionDAO 
         int customerId = resultSet.getInt("customer_id");
         BigDecimal amount = resultSet.getBigDecimal("amount");
         Timestamp transactionDate = resultSet.getTimestamp("transaction_date");
-        return new Transaction(id, customerId, amount, transactionDate.toLocalDateTime());
+        return new Transaction(id, customerId, amount, transactionDate, transactionDate.toLocalDateTime());
     }
 }
