@@ -14,12 +14,15 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 public class Transaction {
-    @Id
+
     private int id;
     private int customerId;
+    private int transactionTypeID;
     private BigDecimal amount;
     private LocalDateTime transactionDate;
 
     // Constructors
+
+
 
 }
