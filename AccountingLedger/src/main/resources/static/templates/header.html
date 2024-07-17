@@ -1,8 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Example</title>
+</head>
+<body>
 <header>
     {{#loggedin}}
     <div id="logo">
         <a href="#" onclick="loadHome()">
-            <img src="/images/updated.png" alt="TheLedge">
+            <img src="/static/images/ledgelogo.png" alt="TheLedge">
         </a>
     </div>
     <nav id="main-nav">
@@ -20,14 +28,14 @@
     <div id="user-info">
         Welcome&nbsp;<span style="font-weight: bold">{{username}}</span>&nbsp;|&nbsp;<a href="#" onclick="userService.logout();return false;">Sign off</a>
         <div class="profile-icon" onclick="editProfile()">
-            <img src="/images/profile-icon.png" alt="Profile Picture">
+            <img src="/static/images/profile-icon.png" alt="Profile Picture">
         </div>
     </div>
     {{/loggedin}}
     {{#loggedout}}
     <div id="logo">
         <a href="#" onclick="loadHome()">
-            <img src="/images/updated.png" alt="eashshop logo">
+            <img src="/static/images/ledgelogo.png" alt="TheLedge">
         </a>
     </div>
     <nav id="main-nav">
@@ -40,3 +48,5 @@
     </div>
     {{/loggedout}}
 </header>
+</body>
+</html>
