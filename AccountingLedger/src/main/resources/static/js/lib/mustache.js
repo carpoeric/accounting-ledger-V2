@@ -4,7 +4,7 @@
 
   Thanks @defunkt for the awesome code
   TBD: MIT, see LICENSE
-  
+
   ChangeLog:
    - 04.10.2009: Ininitial port at http://devhouseberlin.de/
 
@@ -99,7 +99,7 @@ var Mustache = {
         }
       }, this);
   },
-  
+
   escape: function(s) {
     return s.toString().replace(/[&"<>\\]/g, function(s) {
       switch(s) {
