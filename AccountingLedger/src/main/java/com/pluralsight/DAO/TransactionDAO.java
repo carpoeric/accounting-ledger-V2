@@ -1,12 +1,12 @@
 package com.pluralsight.DAO;
 
-import com.pluralsight.models.Transaction;
+import com.pluralsight.models.Transactions;
 import java.util.List;
 
 public interface TransactionDAO {
-    void addTransaction(Transaction transaction);
-    Transaction getTransaction(int id);
-    List<Transaction> getAllTransactions();
-    void updateTransaction(Transaction transaction);
+    Transactions addTransaction(Transactions transactions);
+    Transactions getTransaction(int id);
+    List<Transactions> getAllTransactions();
+    void updateTransaction(Transactions transactions);
     void deleteTransaction(int id);
 }
