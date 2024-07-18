@@ -20,5 +20,10 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
+    <data-source name="LedgerDB@localhost" uuid="6f92b86c-61af-4dd6-ad83-69c12956917d">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" />
+      <user-name>root</user-name>
+      <schema-mapping />
+    </data-source>
   </component>
 </project>

@@ -72,18 +72,6 @@
             profileService.updateProfile(profile);
         }
 
-        function showCart() {
-            cartService.loadCartPage();
-        }
-
-        function clearCart() {
-            cartService.clearCart();
-            cartService.loadCartPage();
-        }
-
-        function checkout() {
-            cartService.checkout();
-        }
 
         function setCategory(control) {
             productService.addCategoryFilter(control.value);

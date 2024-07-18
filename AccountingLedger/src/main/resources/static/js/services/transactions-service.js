@@ -1,36 +1,16 @@
-let productService;
+let transactionService;
 
-class ProductService {
+class TransactionsService {
 
     photos = [];
 
 
     filter = {
         cat: undefined,
-        minPrice: undefined,
-        maxPrice: undefined,
-        color: undefined,
+
         queryString: () => {
             let qs = "";
             if(this.filter.cat){ qs = `cat=${this.filter.cat}`; }
-            if(this.filter.minPrice)
-            {
-                const minP = `minPrice=${this.filter.minPrice}`;
-                if(qs.length>0) {   qs += `&${minP}`; }
-                else { qs = minP; }
-            }
-            if(this.filter.maxPrice)
-            {
-                const maxP = `maxPrice=${this.filter.maxPrice}`;
-                if(qs.length>0) {   qs += `&${maxP}`; }
-                else { qs = maxP; }
-            }
-            if(this.filter.color)
-            {
-                const col = `color=${this.filter.color}`;
-                if(qs.length>0) {   qs += `&${col}`; }
-                else { qs = col; }
-            }
 
             return qs.length > 0 ? `?${qs}` : "";
         }
@@ -54,39 +34,10 @@ class ProductService {
         if(cat == 0) this.clearCategoryFilter();
         else this.filter.cat = cat;
     }
-    addMinPriceFilter(price)
-    {
-        if(price == 0 || price == "") this.clearMinPriceFilter();
-        else this.filter.minPrice = price;
-    }
-    addMaxPriceFilter(price)
-    {
-        if(price == 0 || price == "") this.clearMaxPriceFilter();
-        else this.filter.maxPrice = price;
-    }
-    addColorFilter(color)
-    {
-        if(color == "") this.clearColorFilter();
-        else this.filter.color = color;
-    }
-
     clearCategoryFilter()
     {
         this.filter.cat = undefined;
     }
-    clearMinPriceFilter()
-    {
-        this.filter.minPrice = undefined;
-    }
-    clearMaxPriceFilter()
-    {
-        this.filter.maxPrice = undefined;
-    }
-    clearColorFilter()
-    {
-        this.filter.color = undefined;
-    }
-
     search()
     {
         const url = `${config.baseUrl}/products${this.filter.queryString()}`;
