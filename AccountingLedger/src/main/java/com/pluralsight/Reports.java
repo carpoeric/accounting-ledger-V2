@@ -1,18 +1,12 @@
-package com.pluralsight.Blueprints;
-
-
-
-import com.pluralsight.UI.Colors;
+package com.pluralsight;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-
-import static com.pluralsight.Blueprints.HomePage.homepage;
-import static com.pluralsight.Blueprints.HomePage.scanner;
-import static com.pluralsight.Blueprints.Ledger.printHeader;
-import static com.pluralsight.Blueprints.Ledger.transactions;
+import static com.pluralsight.HomePage.homepage;
+import static com.pluralsight.Ledger.*;
+import static com.pluralsight.HomePage.scanner;
 import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 
 public class Reports

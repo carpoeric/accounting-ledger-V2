@@ -1,4 +1,4 @@
-package com.pluralsight.UI;
+package com.pluralsight;
 
 public class Colors
 {

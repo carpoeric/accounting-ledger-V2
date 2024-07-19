@@ -1,8 +1,4 @@
-package com.pluralsight.Blueprints;
-
-
-
-import com.pluralsight.UI.Colors;
+package com.pluralsight;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,9 +7,7 @@ import java.time.LocalTime;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
-import static com.pluralsight.Blueprints.HomePage.scanner;
-
+import static com.pluralsight.HomePage.scanner;
 
 public class Ledger
 {

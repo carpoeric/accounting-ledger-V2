@@ -1,8 +1,4 @@
-package com.pluralsight.Blueprints;
-
-
-
-import com.pluralsight.UI.Colors;
+package com.pluralsight;
 
 import java.io.FileWriter;
 import java.io.IOException;
