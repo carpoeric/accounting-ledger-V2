@@ -7,7 +7,12 @@ function loadPage(page) {
             return response.text();
         })
         .then(html => {
-            document.getElementById('main').innerHTML = html;
+            const mainElement = document.getElementById('main');
+            if (mainElement) {
+                mainElement.innerHTML = html;
+            } else {
+                console.error("Main element not found.");
+            }
         })
         .catch(error => console.error('Error loading page:', error));
 }
@@ -41,23 +46,35 @@ function addDeposit() {
 
 function makePayment() {
     const amount = document.getElementById("paymentAmount").value;
-    const account = document.getElementById("account").value;
+    const customerId = document.getElementById("customerId").value;
     const payee = document.getElementById("payee").value;
 
-    if (amount && account && payee) {
-        transactionService.makePayment(account, payee, amount)
-            .then(response => {
-                alert("Payment successful! New balance: " + response.newBalance);
-                loadHome();
+    if (amount && customerId && payee) {
+        fetch('/makePayment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ customerId, payee, amount })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Transaction went through! New balance: " + data.newBalance);
+                    loadHome();
+                } else {
+                    alert("Failed to make payment.");
+                }
             })
             .catch(error => {
                 console.error("Error making payment:", error);
                 alert("Failed to make payment.");
             });
     } else {
-        alert("Please enter amount, account, and payee.");
+        alert("Please enter amount, customer ID, and payee.");
     }
 }
+
 
 function viewLedger() {
     loadPage('ledger.html');
@@ -81,7 +98,9 @@ function login() {
 
 function loadHome() {
     templateBuilder.build('home', {}, 'main');
-    transactionService.s;
+    if (transactionService) {
+        transactionService.loadTransactions();  // Ensure this method is defined
+    }
     if (categoryService) {
         categoryService.getAllCategories(loadCategories);
     } else {
