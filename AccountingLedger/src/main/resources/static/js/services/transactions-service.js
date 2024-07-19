@@ -1,97 +1,121 @@
-let transactionService;
-
 class TransactionsService {
-
-    photos = [];
-
-
     filter = {
         cat: undefined,
 
         queryString: () => {
             let qs = "";
-            if(this.filter.cat){ qs = `cat=${this.filter.cat}`; }
-
+            if (this.filter.cat) { qs = `cat=${this.filter.cat}`; }
             return qs.length > 0 ? `?${qs}` : "";
         }
     }
 
-    constructor() {
-
-        //load list of photos into memory
-        axios.get("/images/products/photos.json")
-            .then(response => {
-                this.photos = response.data;
-            });
-    }
-
-    hasPhoto(photo){
-        return this.photos.filter(p => p == photo).length > 0;
-    }
-
-    addCategoryFilter(cat)
-    {
-        if(cat == 0) this.clearCategoryFilter();
+    addCategoryFilter(cat) {
+        if (cat == 0) this.clearCategoryFilter();
         else this.filter.cat = cat;
     }
-    clearCategoryFilter()
-    {
+
+    clearCategoryFilter() {
         this.filter.cat = undefined;
     }
-    search()
-    {
-        const url = `${config.baseUrl}/products${this.filter.queryString()}`;
 
+    search() {
+        const url = `${config.baseUrl}/api/transactions${this.filter.queryString()}`;
         axios.get(url)
-             .then(response => {
-                 let data = {};
-                 data.products = response.data;
-
-                 data.products.forEach(product => {
-                     if(!this.hasPhoto(product.imageUrl))
-                     {
-                         product.imageUrl = "no-image.jpg";
-                     }
-                 })
-
-                 templateBuilder.build('product', data, 'content', this.enableButtons);
-
-             })
+            .then(response => {
+                let data = {};
+                data.transactions = response.data;
+                templateBuilder.build('product', data, 'content', this.enableButtons);
+            })
             .catch(error => {
-
-                const data = {
-                    error: "Searching products failed."
-                };
-
-                templateBuilder.append("error", data, "errors")
+                const data = { error: "Searching transactions failed." };
+                templateBuilder.append("error", data, "errors");
             });
     }
 
-    enableButtons()
-    {
-        const buttons = [...document.querySelectorAll(".add-button")];
-
-        if(userService.isLoggedIn())
-        {
-            buttons.forEach(button => {
-                button.classList.remove("invisible")
+    searchMonthToDate() {
+        const url = `${config.baseUrl}/api/reports/monthToDate`;
+        axios.get(url)
+            .then(response => {
+                let data = {};
+                data.transactions = response.data;
+                templateBuilder.build('product', data, 'content', this.enableButtons);
+            })
+            .catch(error => {
+                const data = { error: "Searching month-to-date transactions failed." };
+                templateBuilder.append("error", data, "errors");
             });
-        }
-        else
-        {
-            buttons.forEach(button => {
-                button.classList.add("invisible")
-            });
-        }
     }
 
+    searchPreviousMonths() {
+        const url = `${config.baseUrl}/api/reports/previousMonths`;
+        axios.get(url)
+            .then(response => {
+                let data = {};
+                data.transactions = response.data;
+                templateBuilder.build('product', data, 'content', this.enableButtons);
+            })
+            .catch(error => {
+                const data = { error: "Searching previous months' transactions failed." };
+                templateBuilder.append("error", data, "errors");
+            });
+    }
+
+    searchYearToDate() {
+        const url = `${config.baseUrl}/api/reports/yearToDate`;
+        axios.get(url)
+            .then(response => {
+                let data = {};
+                data.transactions = response.data;
+                templateBuilder.build('product', data, 'content', this.enableButtons);
+            })
+            .catch(error => {
+                const data = { error: "Searching year-to-date transactions failed." };
+                templateBuilder.append("error", data, "errors");
+            });
+    }
+
+    searchByYear(year) {
+        const url = `${config.baseUrl}/api/reports/${year}`;
+        axios.get(url)
+            .then(response => {
+                let data = {};
+                data.transactions = response.data;
+                templateBuilder.build('product', data, 'content', this.enableButtons);
+            })
+            .catch(error => {
+                const data = { error: `Searching transactions for year ${year} failed.` };
+                templateBuilder.append("error", data, "errors");
+            });
+    }
 }
 
-
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
-    productService = new ProductService();
-
+    transactionService = new TransactionsService();
 });
+
+function setCategory(control) {
+    const value = control.value;
+    switch (value) {
+        case '0':
+            transactionService.search();
+            break;
+        case '1':
+            transactionService.searchMonthToDate();
+            break;
+        case '2':
+            transactionService.searchPreviousMonths();
+            break;
+        case '3':
+            transactionService.searchYearToDate();
+            break;
+        case '4':
+            const year = prompt("Enter the year:");
+            if (year) {
+                transactionService.searchByYear(year);
+            }
+            break;
+        default:
+            transactionService.search();
+            break;
+    }
+}

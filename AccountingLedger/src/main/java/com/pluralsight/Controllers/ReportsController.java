@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @EnableMethodSecurity
-@RequestMapping("reports")
+@RequestMapping("/api/reports")
 
 public class ReportsController {
     private TransactionDAO transactionDao;

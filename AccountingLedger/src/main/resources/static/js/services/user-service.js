@@ -125,8 +125,7 @@ class UserService {
                 this.setHeaderLogin();
 
                 axios.defaults.headers.common = {'Authorization': `Bearer ${this.currentUser.token}`}
-                productService.enableButtons();
-                cartService.loadCart();
+                TransactionsService.enableButtons();
             })
             .catch(error => {
                 const data = {
@@ -145,7 +144,7 @@ class UserService {
 
         this.setHeaderLogin();
 
-        productService.enableButtons();
+        TransactionsService.enableButtons();
     }
 
 }
