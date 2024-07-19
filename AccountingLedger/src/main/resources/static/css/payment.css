@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'Comfortaa';
+    src: url('../fonts/Comfortaa-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Comfortaa', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px; /* Corrected font size notation */
+    background: white;
+    color: #01161E;
+    margin: 0;
+}
+payment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10vh;
+    padding: 5px 15px;
+    border-bottom: solid 1px #eee;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    z-index: 1000;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Ledger</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>Transaction Ledger</h1>
+</header>
+<main>
+    <div class="filter-box">
+        <select name="category" id="category-select" class="form-select" onchange="setCategory(this)">
+            <option value="0">Show All Transactions</option>
+            <option value="1">Month to Date</option>
+            <option value="2">Previous Months</option>
+            <option value="3">Year to Date</option>
+            <option value="4">Get by Year</option>
+        </select>
+    </div>
+    <table id="ledgerTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Customer ID</th>
+            <th>Transaction Type</th>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Rows will be populated by the viewLedger function -->
+        </tbody>
+    </table>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
