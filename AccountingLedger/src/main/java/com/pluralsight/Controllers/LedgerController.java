@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @CrossOrigin
 @EnableMethodSecurity
-@RequestMapping("/api/transactions")
+@RequestMapping("/transactions")
 public class LedgerController {
 
     private final TransactionDAO transactionDao;

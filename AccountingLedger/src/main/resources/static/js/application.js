@@ -1,10 +1,66 @@
 function loadPage(page) {
-    fetch(page)
-        .then(response => response.text())
+    return fetch(page)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
         .then(html => {
-            document.getElementById('content').innerHTML = html;
+            document.getElementById('main').innerHTML = html;
         })
         .catch(error => console.error('Error loading page:', error));
+}
+
+function loadAddDepositPage() {
+    loadPage('deposit.html');
+}
+
+function loadMakePaymentPage() {
+    loadPage('payment.html');
+}
+
+function addDeposit() {
+    const amount = document.getElementById("depositAmount").value;
+    const account = document.getElementById("account").value;
+
+    if (amount && account) {
+        transactionService.deposit(account, amount)
+            .then(response => {
+                alert("Deposit successful! New balance: " + response.newBalance);
+                loadHome();
+            })
+            .catch(error => {
+                console.error("Error making deposit:", error);
+                alert("Failed to make deposit.");
+            });
+    } else {
+        alert("Please enter both amount and account.");
+    }
+}
+
+function makePayment() {
+    const amount = document.getElementById("paymentAmount").value;
+    const account = document.getElementById("account").value;
+    const payee = document.getElementById("payee").value;
+
+    if (amount && account && payee) {
+        transactionService.makePayment(account, payee, amount)
+            .then(response => {
+                alert("Payment successful! New balance: " + response.newBalance);
+                loadHome();
+            })
+            .catch(error => {
+                console.error("Error making payment:", error);
+                alert("Failed to make payment.");
+            });
+    } else {
+        alert("Please enter amount, account, and payee.");
+    }
+}
+
+function viewLedger() {
+    loadPage('ledger.html');
 }
 
 function showLoginForm() {
@@ -25,86 +81,16 @@ function login() {
 
 function loadHome() {
     templateBuilder.build('home', {}, 'main');
-    TransactionsService.search();
-    categoryService.getAllCategories(loadCategories);
+    transactionService.s;
+    if (categoryService) {
+        categoryService.getAllCategories(loadCategories);
+    } else {
+        console.error("categoryService is not defined.");
+    }
 }
 
 function editProfile() {
     profileService.loadProfile();
-}
-
-function addDeposit() {
-    const amount = document.getElementById("depositAmount").value;
-    const account = document.getElementById("account").value;
-
-    if (amount && account) {
-        TransactionsService.deposit(account, amount)
-            .then(response => {
-                alert("Deposit successful! New balance: " + response.newBalance);
-                loadHome();
-            })
-            .catch(error => {
-                console.error("Error making deposit:", error);
-                alert("Failed to make deposit.");
-            });
-    } else {
-        alert("Please enter both amount and account.");
-    }
-}
-
-function makePayment() {
-    const amount = document.getElementById("paymentAmount").value;
-    const account = document.getElementById("account").value;
-    const payee = document.getElementById("payee").value;
-
-    if (amount && account && payee) {
-        TransactionsService.makePayment(account, payee, amount)
-            .then(response => {
-                alert("Payment successful! New balance: " + response.newBalance);
-                loadHome();
-            })
-            .catch(error => {
-                console.error("Error making payment:", error);
-                alert("Failed to make payment.");
-            });
-    } else {
-        alert("Please enter amount, account, and payee.");
-    }
-}
-
-function viewLedger() {
-    loadPage('ledger.html');
-    TransactionsService.getAllTransactions()
-        .then(transactions => {
-            const ledgerTable = document.getElementById("ledgerTable");
-            ledgerTable.innerHTML = ""; // Clear any existing rows
-
-            const headerRow = document.createElement("tr");
-            headerRow.innerHTML = `
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Amount</th>
-                    <th>Account</th>
-                    <th>Description</th>
-                `;
-            ledgerTable.appendChild(headerRow);
-
-            transactions.forEach(transaction => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                        <td>${transaction.date}</td>
-                        <td>${transaction.type}</td>
-                        <td>${transaction.amount}</td>
-                        <td>${transaction.account}</td>
-                        <td>${transaction.description}</td>
-                    `;
-                ledgerTable.appendChild(row);
-            });
-        })
-        .catch(error => {
-            console.error("Error fetching transactions:", error);
-            alert("Failed to load ledger.");
-        });
 }
 
 function saveProfile() {
@@ -132,8 +118,30 @@ function saveProfile() {
 }
 
 function setCategory(control) {
-    TransactionsService.addCategoryFilter(control.value);
-    TransactionsService.search();
+    const value = control.value;
+    switch (value) {
+        case '0':
+            transactionService.search();
+            break;
+        case '1':
+            transactionService.searchMonthToDate();
+            break;
+        case '2':
+            transactionService.searchPreviousMonths();
+            break;
+        case '3':
+            transactionService.searchYearToDate();
+            break;
+        case '4':
+            const year = prompt("Enter the year:");
+            if (year) {
+                transactionService.searchByYear(year);
+            }
+            break;
+        default:
+            transactionService.search();
+            break;
+    }
 }
 
 function closeError(control) {
@@ -142,6 +150,27 @@ function closeError(control) {
     }, 3000);
 }
 
+function loadCategories(categories) {
+    const categoryContainer = document.getElementById('category-container');
+    if (!categoryContainer) {
+        console.error("Category container element not found.");
+        return;
+    }
+
+    // Clear existing categories
+    categoryContainer.innerHTML = '';
+
+    // Create and append new category elements
+    categories.forEach(category => {
+        const categoryElement = document.createElement('div');
+        categoryElement.className = 'category';
+        categoryElement.textContent = category.name; // Assuming category object has a 'name' property
+        categoryContainer.appendChild(categoryElement);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    categoryService = new CategoryService();
+    transactionService = new TransactionsService();
     loadHome();
 });

@@ -1,10 +1,6 @@
 let categoryService;
-
 class CategoryService {
-
-
-    getAllCategories(callback)
-    {
+    getAllCategories(callback) {
         const url = `${config.baseUrl}/categories`;
 
         return axios.get(url)
@@ -12,12 +8,11 @@ class CategoryService {
                 callback(response.data);
             })
             .catch(error => {
-
                 const data = {
                     error: "Loading categories failed."
                 };
 
-                templateBuilder.append("error", data, "errors")
+                templateBuilder.append("error", data, "errors");
             });
     }
 }

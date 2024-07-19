@@ -9,15 +9,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
-@EnableMethodSecurity
-@RequestMapping("/api/reports")
-
+@RequestMapping("/reports")
 public class ReportsController {
-    private TransactionDAO transactionDao;
+    private final TransactionDAO transactionDao;
 
     @Autowired
     public ReportsController(TransactionDAO transactionDao){
@@ -26,46 +26,46 @@ public class ReportsController {
 
     @GetMapping("/monthToDate")
     @ResponseStatus(HttpStatus.OK)
-    public List<Transactions> monthToDate(){
+    public List<Transactions> monthToDate() {
+        System.out.println("monthToDate endpoint hit");
         LocalDateTime today = LocalDateTime.now();
+        LocalDateTime startOfMonth = today.withDayOfMonth(1).with(LocalTime.MIN);
+
         return transactionDao.getAllTransactions().stream()
-                .filter(t-> t.getTransactionDate().getMonthValue() == today.getMonthValue())
-                .toList();
+                .filter(t -> t.getTransactionDate().getYear() == today.getYear() &&
+                        t.getTransactionDate().getMonthValue() == today.getMonthValue() &&
+                        !t.getTransactionDate().isAfter(today))
+                .collect(Collectors.toList());
     }
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/previousMonths")
+
+    @GetMapping("/previousMonth")
     @ResponseStatus(HttpStatus.OK)
-    public List<Transactions> getPreviousMonths(){
+    public List<Transactions> getPreviousMonth() {
+        System.out.println("previousMonth endpoint hit");
         LocalDateTime today = LocalDateTime.now();
+        LocalDateTime startOfPreviousMonth = today.minusMonths(1).withDayOfMonth(1).with(LocalTime.MIN);
+        LocalDateTime endOfPreviousMonth = today.withDayOfMonth(1).minusDays(1).with(LocalTime.MAX);
+
         return transactionDao.getAllTransactions().stream()
-                .filter(t-> t.getTransactionDate().getMonthValue() < today.getMonthValue())
-                .toList();
+                .filter(t -> !t.getTransactionDate().isBefore(startOfPreviousMonth) && !t.getTransactionDate().isAfter(endOfPreviousMonth))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/yearToDate")
     @ResponseStatus(HttpStatus.OK)
     public List<Transactions> yearToDate(){
+        System.out.println("yearToDate endpoint hit");
         LocalDateTime today = LocalDateTime.now();
         return transactionDao.getAllTransactions().stream()
                 .filter(t-> t.getTransactionDate().getYear() == today.getYear())
-                .toList();
+                .collect(Collectors.toList());
     }
-
-    // add version of yearToDate with path variable for given year
 
     @GetMapping("/{year}")
     public List<Transactions> getByYear(@PathVariable int year){
-        LocalDateTime today = LocalDateTime.now();
-        List <Transactions> transactions = transactionDao.getAllTransactions().stream()
+        System.out.println("getByYear endpoint hit with year: " + year);
+        return transactionDao.getAllTransactions().stream()
                 .filter(t-> t.getTransactionDate().getYear() == year)
-                .toList();
-        return transactions;
+                .collect(Collectors.toList());
     }
-
-    // we don't have a field for vendor in any of the models, perhaps we can add vendor into a new table, may result in moving these methods elsewhere.
-//    public List<Transaction> searchByVendor(String Vendor){
-//
-//    }
-
-
 }

@@ -1,57 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logo Example</title>
-</head>
-<body>
-<header>
-    {{#loggedin}}
-    <div id="logo">
-        <a href="#" onclick="loadHome()">
-            <img src="/static/images/ledgelogo.png" alt="TheLedge">
-        </a>
-    </div>
-    <nav id="main-nav">
-        <div id="links">
-            <div id="options" class="dropdown">
-                <a href="#" class="dropbtn">Options</a>
-                <div class="dropdown-content">
-                    <a href="#link1">Add Deposit</a>
-                    <a href="#link2">Make Payment</a>
-                    <a href="#link3">View Ledger</a>
-                </div>
+<div id="logo">
+    <a href="#" onclick="loadHome()">
+        <img src="/static/images/ledgelogo.png" alt="TheLedge">
+    </a>
+</div>
+<nav id="main-nav">
+    <div id="links">
+        <div id="options" class="dropdown">
+            <a href="#" class="dropbtn">The Ledge</a>
+            <div class="dropdown-content">
+                <a href="#" onclick="loadAddDepositPage()">Add Deposit</a>
+                <a href="#" onclick="loadMakePaymentPage()">Make Payment</a>
+                <a href="#" onclick="viewLedger()">View Ledger</a>
             </div>
-        </div>
-    </nav>
-    <div id="user-info">
-        Welcome&nbsp;<span style="font-weight: bold">{{username}}</span>&nbsp;|&nbsp;<a href="#" onclick="userService.logout();return false;">Sign off</a>
-        <div class="profile-icon" onclick="editProfile()">
-            <img src="/static/images/profile-icon.png" alt="Profile Picture">
+            <div id="category-container"></div>
+
         </div>
     </div>
-    {{/loggedin}}
-    {{#loggedout}}
-    <div id="logo">
-        <a href="#" onclick="loadHome()">
-            <img src="/static/images/ledgelogo.png" alt="TheLedge">
-        </a>
-    </div>
-    <nav id="main-nav">
-        <div id="links">
-            <div id="options" class="dropdown">
-                <a href="#" class="dropbtn">The Ledge</a>
-                <div class="dropdown-content">
-                    <a href="#" onclick="addDeposit()">Add Deposit</a>
-                    <a href="#" onclick="makePayment()">Make Payment</a>
-                    <a href="#link3">View Ledger</a>
-        </div>
-    </nav>
-    <div id="user-info">
-        <a href="#" onclick="showLoginForm();return false;">Sign in</a>
-    </div>
-    {{/loggedout}}
-</header>
-</body>
-</html>
+</nav>
+<div id="user-info">
+    <a href="#" onclick="showLoginForm();return false;">Sign in</a>
+</div>
