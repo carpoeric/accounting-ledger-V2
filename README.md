@@ -4,4 +4,4 @@ The Ledge is short for Ledger, and it is exactly that! Whether you're budgeting 
 
 ## Project Summary
 
-This project's intention is to collaborate with a team while revitalizing an existing application to improve functionality, performance, and user experience. As stated above, we collectively chose to revamp one of our first projects in this course, the accounting ledger. The revamped addition of this project is a testament to what we have learned from day 1 to now. 
+This project's intention is to understand the ins and outs of collaborating with a team in real time while revitalizing an existing application to improve functionality, performance, and user experience. As stated above, we collectively chose to revamp one of our first projects in this course, the accounting ledger. The revamped addition of this project is a testament to what we have learned from day 1 to today. 
